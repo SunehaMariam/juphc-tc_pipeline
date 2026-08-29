@@ -6,6 +6,10 @@ spec:
   pipelineRef:
     name: tax-calculator-pipeline
 
+  params:
+    - name: IMAGE
+      value: us.icr.io/sn-labs-sunehamariam/tax-calculator:latest
+
   workspaces:
     - name: source
       emptyDir: {}
