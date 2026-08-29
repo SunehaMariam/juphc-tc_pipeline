@@ -1,0 +1,30 @@
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: npm
+spec:
+  params:
+    - name: ARGS
+      type: array
+      default:
+        - install
+  steps:
+    - name: npm
+      image: node:20
+      command:
+        - npm
+      args: ["$(params.ARGS[*])"]
+
+---
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: jasmine
+spec:
+  steps:
+    - name: jasmine
+      image: node:20
+      script: |
+        #!/usr/bin/env sh
+        npm install
+        npx jasmine
