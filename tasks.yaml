@@ -28,3 +28,23 @@ spec:
         #!/usr/bin/env sh
         npm install
         npx jasmine
+
+---
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: build
+spec:
+  params:
+    - name: IMAGE
+      type: string
+      default: us.icr.io/sn-labs-sunehamariam/tax-calculator:latest
+  workspaces:
+    - name: source
+  steps:
+    - name: build-and-push
+      image: gcr.io/kaniko-project/executor:latest
+      args:
+        - --dockerfile=$(workspaces.source.path)/Dockerfile
+        - --context=$(workspaces.source.path)
+        - --destination=$(params.IMAGE)
